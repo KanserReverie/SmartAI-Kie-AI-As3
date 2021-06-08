@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace KieranAI1
+namespace KieranAI3
 {
     public class HumanWaypoint : MonoBehaviour
     {

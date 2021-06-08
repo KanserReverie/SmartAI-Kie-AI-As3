@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace KieranAI1
+namespace KieranAI3
 {
     [RequireComponent(typeof(NavMeshAgent))]
     public class HumanScript : MonoBehaviour
     {
+        private int collectedCoins;
+        public int CollectedCoins => collectedCoins;
         private NavMeshAgent agent;
         private HumanWaypoint[] waypoints;
         private Animator AgentAnimator;
@@ -37,6 +39,12 @@ namespace KieranAI1
 
             // If running, play running animation.
             AgentAnimator.SetBool("Running", agent.velocity.magnitude > runSpeed);
+
+        }
+
+        public void CollectCoin()
+        {
+            collectedCoins++;
         }
     }
 }
