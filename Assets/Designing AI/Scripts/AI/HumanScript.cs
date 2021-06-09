@@ -61,6 +61,7 @@ namespace KieranAI3
             particles.gameObject.SetActive(true);
             UpdateState(States.FinishedGame);
             AgentAnimator.SetBool("FinishedGame",true);
+            AgentAnimator.Play("Maze Finished");
         }
 
         // Update All the UI.
@@ -70,6 +71,19 @@ namespace KieranAI3
             InitialDistance.text = ("Initial Distance = " + distanceToDestination);
             coinsCollected.text = ("Coins Collected = " + collectedCoins);
             playerState.text = (currentState.ToString());
+        }
+
+        public void SpeedUp()
+        {
+            agent.speed = 440f;
+            agent.angularSpeed = 21600f;
+            agent.acceleration = 2000f;
+        }
+        public void NormalSpeed()
+        {
+            agent.speed = 44f;
+            agent.angularSpeed = 2160f;
+            agent.acceleration = 200f;
         }
     }
 }
