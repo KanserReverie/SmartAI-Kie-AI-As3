@@ -16,7 +16,6 @@ namespace KieranAI3
 
         private void OnTriggerStay(Collider _collision)
         {
-            print("Collision!!");
             if (_collision.gameObject.tag == "Player")
             {
                 myPlayer.CollectCoin();

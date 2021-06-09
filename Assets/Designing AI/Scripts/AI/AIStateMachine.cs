@@ -10,7 +10,8 @@ namespace KieranAI3
     {
         CoinCollection,
         FindGateSwitch,
-        RuntoFinish
+        RuntoFinish,
+        FinishedGame
     }
 
     // The delegate that dictates what the fuctions for each state will look like.
@@ -27,6 +28,7 @@ namespace KieranAI3
         [SerializeField] private Vector3 FinishDestination;
 
         private bool haveAllCoinsBeenCollected;
+        private bool haveIReachedFinish;
 
         private NavMeshAgent agent;
         private Animator AgentAnimator;
@@ -39,23 +41,32 @@ namespace KieranAI3
             AgentAnimator = GetComponent<Animator>();
 
             states.Add(States.CoinCollection, GotoClosestCoin);
-            //states.Add(States.FindGateSwitch, GotoClosestSwitch);
-            //states.Add(States.RuntoFinish, GotoFinishPoint);
+            states.Add(States.FindGateSwitch, GotoClosestSwitch);
+            states.Add(States.RuntoFinish, GotoFinishPoint);
+            states.Add(States.FinishedGame, GotoFinishPoint);
 
             // Starts the state machine.
             FindNextState();
         }
 
-        // Finds the next state.
+        // Starts the CoRoutine to find the next state.
         private void FindNextState()
         {
             StartCoroutine(FindingNextState());
         }
 
         // Waits 2 Seconds then Finds the next state, to make sure the path is clear
-        public IEnumerator FindingNextState()
+        private IEnumerator FindingNextState()
         {
-            yield return new WaitForSeconds(2);
+            LocationPosition.text = ("Finding Closest Point");
+            InitialDistance.text = ("Comparing Distances");
+            float x = 2;
+            while (x >= 0)
+            {
+                x -= Time.deltaTime;
+                playerState.text = ("Next State in " + x.ToString("F2"));
+                yield return null;
+            }
 
             // Refresh all the goal points
             UpdateGoals();
@@ -65,21 +76,50 @@ namespace KieranAI3
             {
                 if (CanIGetToAnyPoint(CoinWaypoints))
                 {
-                    UpdateState(States.CoinCollection);
+                    UpdateState(States.CoinCollection, CoinWaypoints);
                 }
+                else if (CanIGetToAnyPoint(DoorSwitchWaypoints))
+                {
+                    UpdateState(States.FindGateSwitch, DoorSwitchWaypoints);
+                }
+            }
+            else if (!haveIReachedFinish)
+            {
+                if (CanIGetToThisPoint(FinishDestination))
+                {
+                    // Change this into a vector 3 cause I ain't writing another overload at 2am.
+                    Vector3[] finalDestinationArray = new Vector3[1];
+                    finalDestinationArray[0] = FinishDestination;
+                    UpdateState(States.RuntoFinish, finalDestinationArray);
+                }
+                else if (CanIGetToAnyPoint(DoorSwitchWaypoints))
+                {
+                    UpdateState(States.FindGateSwitch, DoorSwitchWaypoints);
+                }
+            }
+            else if (haveIReachedFinish)
+            {
+                UpdateState(States.FinishedGame);
             }
         }
 
         // Updates with the new state.
-        public void UpdateState(States _NextState)
+        public void UpdateState(States _NextState, Vector3[] _StateWaypoints)
         {
             // Updates the current state with the new state.
             currentState = _NextState;
 
             // Go to closest point.
-            nextDestination = FindClosestGoal(CoinWaypoints);
+            nextDestination = FindClosestGoal(_StateWaypoints);
             agent.SetDestination(nextDestination);
 
+            // Finally Update all the UI.
+            UpdateUI();
+        }
+        public void UpdateState(States _NextState)
+        {
+            // Updates the current state with the new state.
+            currentState = _NextState;
             // Finally Update all the UI.
             UpdateUI();
         }
@@ -90,7 +130,22 @@ namespace KieranAI3
             AgentAnimator.SetBool("Running", agent.velocity.magnitude > runSpeed);
         }
 
-        //private void GotoClosestSwitch() => controlled.Rotate(Vector3.up, speed * 0.5f);
+        private void GotoClosestSwitch()
+        {
+            // If running, play running animation.
+            AgentAnimator.SetBool("Running", agent.velocity.magnitude > runSpeed);
+        }
+        private void GotoFinishPoint()
+        {
+            // If running, play running animation.
+            AgentAnimator.SetBool("Running", agent.velocity.magnitude > runSpeed);
+        }
+        private void Celerbrate()
+        {
+            // If running, play running animation.
+            AgentAnimator.SetBool("FinishedGame", true);
+        }
+
         //private void GotoFinishPoint() => controlled.localScale += Vector3.one * Time.deltaTime * speed;
     }
 }

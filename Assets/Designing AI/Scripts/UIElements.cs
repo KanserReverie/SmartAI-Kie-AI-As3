@@ -19,5 +19,10 @@ namespace KieranAI3
         {
             SceneManager.LoadScene(1);
         }
+        public void RetryButton()
+        {
+            Time.timeScale = 1;
+            Scene scene = SceneManager.GetActiveScene(); SceneManager.LoadScene(scene.name);
+        }
     }
 }

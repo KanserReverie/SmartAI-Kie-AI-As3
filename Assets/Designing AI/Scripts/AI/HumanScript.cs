@@ -10,20 +10,21 @@ namespace KieranAI3
     [RequireComponent(typeof(NavMeshAgent))]
     public partial class HumanScript : MonoBehaviour
     {
-        [SerializeField] private States currentState;
-
+        [SerializeField] private GameObject particles;
+        private States currentState;
+        public States CurrentState => currentState;
         // All the main Variables Just fot the player to see.
-        [SerializeField] private int collectedCoins;
+        private int collectedCoins;
         public int CollectedCoins => collectedCoins;
-        [SerializeField] private Vector3 nextDestination;
-        [SerializeField] private float distanceToDestination;
+        private Vector3 nextDestination;
+        private float distanceToDestination;
         [SerializeField] private float runSpeed;
-        [SerializeField] private NavMeshSurface myNavMeshSurface;
+
+        // All the text boxes to be seen in UI.
         [SerializeField] private Text LocationPosition;
         [SerializeField] private Text InitialDistance;
         [SerializeField] private Text coinsCollected;
         [SerializeField] private Text playerState;
-
 
 
         // This will update all the goals and show in inspector.
@@ -45,8 +46,21 @@ namespace KieranAI3
         public void CollectCoin()
         {
             collectedCoins++;
-            FindNextState();
             UpdateUI();
+            FindNextState();
+        }
+
+        public void OpenDoor()
+        {
+            UpdateUI();
+            FindNextState();
+        }
+
+        public void FinishGame()
+        {
+            particles.gameObject.SetActive(true);
+            UpdateState(States.FinishedGame);
+            AgentAnimator.SetBool("FinishedGame",true);
         }
 
         // Update All the UI.

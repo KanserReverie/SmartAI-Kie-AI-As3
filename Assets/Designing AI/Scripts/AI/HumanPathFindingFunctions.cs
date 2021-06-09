@@ -36,17 +36,17 @@ namespace KieranAI3
         {
             // Get all the Coin Positions in Scene.
             Coin[] waypoints = FindObjectsOfType<Coin>();
-            if (waypoints[0] == null)
-                haveAllCoinsBeenCollected = true;
-            else
-            {
-                haveAllCoinsBeenCollected = false;
                 CoinWaypoints = new Vector3[waypoints.Length];
                 for (int i = 0; i < waypoints.Length;)
                 {
                     CoinWaypoints[i] = waypoints[i].Position;
                     i++;
                 }
+            if (waypoints.Length <= 0)
+                haveAllCoinsBeenCollected = true;
+            else
+            {
+                haveAllCoinsBeenCollected = false;
             }
             // Get all the DoorSwitch Positions in Scene.
             DoorSwitch[] waypoints2 = FindObjectsOfType<DoorSwitch>();
@@ -59,7 +59,15 @@ namespace KieranAI3
 
             // Find The Finish Door.
             HumanWaypoint finishDoor = FindObjectOfType<HumanWaypoint>();
-            FinishDestination = finishDoor.Position;
+            if (finishDoor != null)
+            {
+                FinishDestination = finishDoor.Position;
+                haveIReachedFinish = false;
+            }
+            else
+            {
+                haveIReachedFinish = true;
+            }
         }
 
         // Gives out the closest avaliable point
@@ -67,6 +75,7 @@ namespace KieranAI3
         // This ONLY gets called after we know it can get to atleast ONE of the points.
         private Vector3 FindClosestGoal(Vector3[] _ArrayOfPoints)
         {
+            print("!!!FINDING NEXT CLOSEST POINT!!!");
             // We are making the path -2 so that we can check if it has been touched, in this instance you can't have negative distance.
             float fastestPathDistance = -2;
 

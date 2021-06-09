@@ -6,6 +6,5 @@ namespace KieranAI3
 {
     public class RedDoor : BaseDoor
     {
-        public void LiftThisDoor() => StartCoroutine(LiftDoor());
     }
 }
