@@ -24,7 +24,7 @@ namespace KieranAI3
             do
             {
                 yield return new WaitForSeconds(0.5f);
-            } while (myPlayer.CollectedCoins < 3);
+            } while (!myPlayer.HaveAllCoinsBeenCollected);
             LiftThisDoor();
         }
     }

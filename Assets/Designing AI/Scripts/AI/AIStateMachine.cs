@@ -28,6 +28,7 @@ namespace KieranAI3
         [SerializeField] private Vector3 FinishDestination;
 
         private bool haveAllCoinsBeenCollected;
+        public bool HaveAllCoinsBeenCollected => haveAllCoinsBeenCollected;
         private bool haveIReachedFinish;
 
         private NavMeshAgent agent;

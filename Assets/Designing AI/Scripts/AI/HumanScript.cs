@@ -18,7 +18,9 @@ namespace KieranAI3
         public int CollectedCoins => collectedCoins;
         private Vector3 nextDestination;
         private float distanceToDestination;
+
         [SerializeField] private float runSpeed;
+        [SerializeField] private GameObject myCammera;
 
         // All the text boxes to be seen in UI.
         [SerializeField] private Text LocationPosition;
@@ -40,6 +42,10 @@ namespace KieranAI3
             else
             {
                 Debug.LogError($"No state fuction set for state {currentState}.");
+            }
+            if (currentState == States.FinishedGame)
+            {
+                gameObject.transform.LookAt(myCammera.transform);
             }
         }
 
@@ -75,15 +81,15 @@ namespace KieranAI3
 
         public void SpeedUp()
         {
-            agent.speed = 440f;
-            agent.angularSpeed = 21600f;
-            agent.acceleration = 2000f;
+            agent.speed = 340f;
+            agent.angularSpeed = 8640f;
+            agent.acceleration = 10000f;
         }
         public void NormalSpeed()
         {
             agent.speed = 44f;
             agent.angularSpeed = 2160f;
-            agent.acceleration = 200f;
+            agent.acceleration = 300f;
         }
     }
 }

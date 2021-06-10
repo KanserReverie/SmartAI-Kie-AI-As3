@@ -76,7 +76,8 @@ namespace KieranAI3
         private Vector3 FindClosestGoal(Vector3[] _ArrayOfPoints)
         {
             print("!!!FINDING NEXT CLOSEST POINT!!!");
-            // We are making the path -2 so that we can check if it has been touched, in this instance you can't have negative distance.
+
+            // We are making the path -2 so that we can check if it has been touched, remember you can't have negative distance thus any distance will be larger.
             float fastestPathDistance = -2;
 
             // We know this will be over ridden so for now we are initialising it as 0,0,0
@@ -126,7 +127,7 @@ namespace KieranAI3
                         }
                     }
 
-                    // Basically if this is the closest path add it to the list.
+                    // Basically if this is the FIRST closest path make it the .
                     else
                     {
                         // Will check the distace of this path
