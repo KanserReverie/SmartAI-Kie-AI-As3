@@ -116,6 +116,7 @@ namespace KieranAI3
                             // If so make it the new destination.
                             fastestPathDistance = newDistance;
                             closestPoint = _ArrayOfPoints[i];
+
                             // I dont really like printing stuff so this should come off.
                             print("NEW fastest path distance = " + fastestPathDistance + " -- From point" + _ArrayOfPoints[i]);
                             distanceToDestination = fastestPathDistance;
