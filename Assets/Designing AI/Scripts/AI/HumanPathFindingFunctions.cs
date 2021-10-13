@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -103,7 +104,7 @@ namespace KieranAI3
 
                         // Calculate this new path.
                         NavMesh.CalculatePath(transform.position, _ArrayOfPoints[i], NavMesh.AllAreas, navMeshPath);
-
+                        
                         // Basically we will get each cornor of the path and check the combined length of them. TO NOTE THERE IS NO OTHER WAY TO DO THIS!
                         for (int y = 1; y < navMeshPath.corners.Length; ++y)
                         {
